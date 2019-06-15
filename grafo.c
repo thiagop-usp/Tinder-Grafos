@@ -7,7 +7,8 @@
 #define N 1000
 #define AMIZADE 1
 #define NAMORO 2
-#define VERDADEIRO 0.6
+#define VERDADEIRO 0.5
+#define BAIXA_AFINIDADE 0.2
 
 int id_max;
 
@@ -17,7 +18,7 @@ struct USUARIO{
     int idade;
     char* filme_predileto;
     int interesse;
-    char sexo;
+    int sexo;
     char* curso;
     char*  genero_musica;
     char* cidade;
@@ -29,11 +30,11 @@ struct ARESTA{
     char* nome_i;
     char* nome_j;
 
-    // interesse == 'h' se i procura por homens, 'm' se procura por mulheres e 'a' se procura por ambos
-    char interesse_i;
-    char interesse_j;
+    // interesse == 0 se i procura por homens, 1 se procura por mulheres e 2 se procura por ambos
+    int interesse_i;
+    int interesse_j;
 
-    // sexo == 'h' se i é homem e 'm' se é mulher
+    // sexo == 0 se i é homem e 1 se é mulher
     char sexo_i;
     char sexo_j;
 
@@ -88,7 +89,7 @@ usuario* criar_usuario_nulo(){
     return us;
 }
 
-usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, char sexo, char* curso, char* genero_musica, char* cidade, usuario** lista_ids){
+usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista_ids){
     usuario* us = criar_usuario_nulo();
 
     us->id = id_max++;
@@ -125,9 +126,9 @@ double calcular_semelhanca(usuario* us1, usuario* us2){
     if(sim_musica == 0) sim_musica = 1.0;
     else sim_musica = 0.0;
 
-    double total = (12.0*sim_idade + 0.5*sim_filme + 4.0*sim_curso + 0.5*sim_musica + 3.0*sim_cidade);
-    total /= 20.0;
-
+    double total = (30.0*sim_idade + 15.0*sim_filme + 30.0*sim_curso + 20.0*sim_musica + 35.0*sim_cidade);
+    total /= 130.0;
+    total *= (1.0 - (abs(us1->idade - us2->idade)/100.0));
     return total;
 }
 
@@ -145,9 +146,13 @@ void atualizar_grafo(grafo* g, usuario** lista){
             strcpy(g->relacao[id_i][id_j].nome_j, lista[j]->nome);
 
             g->relacao[id_i][id_j].interesse_i = lista[i]->interesse;
-            g->relacao[id_i][id_j].sexo_i = lista[i]->sexo;
+            g->relacao[id_j][id_i].interesse_i = lista[j]->interesse;
+            g->relacao[id_j][id_i].interesse_j = lista[i]->interesse;
             g->relacao[id_i][id_j].interesse_j = lista[j]->interesse;
-            g->relacao[id_i][id_j].sexo_i = lista[j]->sexo;
+            g->relacao[id_i][id_j].sexo_i = lista[i]->sexo;
+            g->relacao[id_j][id_i].sexo_i = lista[j]->sexo;
+            g->relacao[id_j][id_i].sexo_j = lista[i]->sexo;
+            g->relacao[id_i][id_j].sexo_j = lista[j]->sexo;
         }
     }
 }
@@ -164,19 +169,19 @@ void imprimir_grafo(grafo* g){
             printf("%s possui %lf%% de semelhança com %s\n", g->relacao[i][j].nome_i, sem * 100.0, g->relacao[i][j].nome_j);
 
             if(convite == 0){
-                printf("%s nao convidou o usuario %s\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+                printf("%s não mandou convites para o(a) usuário(a) %s\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
             } else if(convite == 1){
-                printf("%s convidou o usuario %s para amizade\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+                printf("%s convidou o(a) usuário(a) %s para amizade\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
             } else if(convite == 2){
-                printf("%s convidou o usuario %s para namoro\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+                printf("%s convidou o(a) usuário(a) %s para namoro\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
             }
 
             if(estado == 0){
-                printf("%s nao conhece o usuario %s\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+                printf("%s não conhece o(a) usuário(a) %s\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
             } else if(estado == 1){
-                printf("%s e %s sao amigos\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+                printf("%s e %s são amigos(as)\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
             } else if(estado == 2){
-                printf("%s e %s sao namorados\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+                printf("%s e %s são namorados(as)\n", g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
             }
         }
         printf("\n");
@@ -194,8 +199,9 @@ void mandar_convite(grafo* g, char* origem, char* destino, int tipo_convite){
             int estado = g->relacao[i][j].estado;
 
             if(!estado){
+                printf("Convite enviado!\n");
                 g->relacao[i][j].convite = tipo_convite;
-            } else {
+            } else if(tipo_convite == estado){
                 printf("Usuários já se conhecem.\n");
             }
             return;
@@ -220,66 +226,69 @@ void ver_convites(grafo* g, char* nome_usuario){
         return;
     }
 
+    int num_convites = 0;
+
     for(int j = 0; j < n; j++){
         if(j == id) continue;
         int* convite = &(g->relacao[j][id].convite);
         int* estado = &(g->relacao[j][id].estado);
+        int* estado2 = &(g->relacao[id][j].estado);
         double semelhanca = g->relacao[j][id].semelhanca;
 
+        if(*convite) num_convites++;
+
         if(*convite == 1){
-            printf("%s mandou um convite de amizade para você! Recusar (r), Aceitar (a) ou Ignorar (i)?\n", g->relacao[j][id].nome_i);
+            printf("%s mandou um convite de amizade para você! Recusar (0), Aceitar (1) ou Ignorar (2)?\n", g->relacao[j][id].nome_i);
             printf("A chance de essa ser a amizade ideal é de %lf%%\n", semelhanca*100.0);
             printf("======================================================================================\n");
-            char opcao = '-';
+            char* opcao = malloc(5);
             int correta = 0;
 
-            while(!correta){
-                scanf(" %c", &opcao);
-                switch(opcao){
-                    case 'r':
-                        *convite = 0;
-                        correta = 1;
-                        printf("O convite foi removido\n");
-                        break;
-                    case 'a':
-                        *convite = 0;
-                        *estado = 1;
-                        correta = 1;
-                        printf("Você e %s viraram amigos!\n", g->relacao[j][id].nome_i);
-                        break;
-                    case 'i':
-                        correta = 1;
-                        printf("Você ignorou o convite...\n");
-                        break;
-                    default:
-                        break;
+            while(!correta) {
+                scanf("%s", opcao);
+                if(opcao[0] == '0'){
+                    *convite = 0;
+                    correta = 1;
+                    printf("O convite foi removido\n");
+                    break;
+                } else if (opcao[0] == '1'){
+                    *convite = 0;
+                    *estado = 1;
+                    *estado2 = 1;
+                    correta = 1;
+                    printf("Você e %s viraram amigos!\n", g->relacao[j][id].nome_i);
+                    break;
+                } else if (opcao[0] == '2'){
+                    correta = 1;
+                    printf("Você ignorou o convite...\n");
                 }
             }
-
+            printf("\n");
         }
 
         if(*convite == 2){
-            printf("%s mandou um pedido de namoro para você! Recusar (r), Aceitar (a) ou Ignorar (i)?\n", g->relacao[j][id].nome_i);
+            printf("%s mandou um pedido de namoro para você! Recusar (0), Aceitar (1) ou Ignorar (2)?\n", g->relacao[j][id].nome_i);
             printf("A chance de essa ser o namoro ideal é de %lf%%\n", semelhanca*100.0);
             printf("======================================================================================\n");
-            char opcao = '-';
+            int opcao = -1;
             int correta = 0;
 
             while(!correta){
-                scanf(" %c", &opcao);
+                scanf("%d", &opcao);
                 switch(opcao){
-                    case 'r':
+                    case 0:
                         *convite = 0;
                         correta = 1;
                         printf("O convite foi removido\n");
                         break;
-                    case 'a':
+                    case 1:
                         *convite = 0;
-                        *estado = 1;
+                        *estado = 2;
+                        *estado2 = 2;
                         correta = 1;
                         printf("Você e %s viraram namorados!\n", g->relacao[j][id].nome_i);
                         break;
-                    case 'i':
+                    case 2:
                         correta = 1;
                         printf("Você ignorou o convite...\n");
                         break;
@@ -287,9 +296,11 @@ void ver_convites(grafo* g, char* nome_usuario){
                         break;
                 }
             }
+            printf("\n");
         }
-        printf("\n");
     }
+    if(!num_convites)
+        printf("Usuário não possui convites pendentes.\n");
 }
 
 void sugerir_amigos(grafo* g, char* nome_usuario){
@@ -308,17 +319,20 @@ void sugerir_amigos(grafo* g, char* nome_usuario){
         return;
     }
 
+    int num_sugestoes = 0;
+
     for(int i = 0; i < n; i++){
         if(i == id) continue;
         double semelhanca = g->relacao[i][id].semelhanca;
         int estado = g->relacao[i][id].estado;
 
         if(semelhanca >= VERDADEIRO && estado == 0){
-            printf("Você e %s seriam grandes parceiros!\nSeu grau de afinidade de perfil é de %lf%%!\nDigite (0) para mandar um convite de amizade, (1) para um convite de namoro e (2) para prosseguir.\n", semelhanca*100.0, g->relacao[i][id].nome_i);
+            num_sugestoes++;
+            printf("Você e %s seriam grandes parceiros!\nSeu grau de afinidade de perfil é de %lf%%!\nDigite (0) para mandar um convite de amizade, (1) para um convite de namoro e (2) para prosseguir.\n", g->relacao[i][id].nome_i, semelhanca*100.0);
             printf("==================================================================\n");
 
             int tipo_convite = -1;
-            scanf(" %d ", &tipo_convite);
+            scanf("%d", &tipo_convite);
 
             while(tipo_convite != 2){
                 mandar_convite(g, nome_usuario, g->relacao[i][id].nome_i, tipo_convite);
@@ -331,10 +345,121 @@ void sugerir_amigos(grafo* g, char* nome_usuario){
                     tipo_convite = 2;
                 }
                 else {
-                    scanf(" %d ", &tipo_convite);
+                    scanf("%d", &tipo_convite);
                 }
             }
         }
-        printf("\n");
+    }
+    if(!num_sugestoes)
+        printf("Desculpe, nao existem sugestoes validas para voce, com base em afinidade de perfil...\n");
+}
+
+void detectar_baixa_afinidade(grafo* g, char* nome_usuario){
+    int n = g->num_pessoas;
+    int id = -1;
+
+    for(int i = 0; i < n; i++){
+        if(strcmp(g->relacao[i][0].nome_i, nome_usuario) == 0){
+            id = i;
+            break;
+        }
+    }
+
+    if(id == -1){
+        printf("Usuário não encontrado\n");
+        return;
+    }
+
+    int num_contatos = 0;
+
+    for(int i = 0; i < n; i++){
+        if(i == id) continue;
+        double semelhanca = g->relacao[i][id].semelhanca;
+        int* estado = &(g->relacao[i][id].estado);
+
+        if(semelhanca <= BAIXA_AFINIDADE && *estado != 0){
+            num_contatos++;
+            if(*estado == 1)
+                printf("%s está registrado como amigo na sua lista de contatos, ", g->relacao[i][id].nome_i);
+            else if(*estado == 2)
+                printf("%s está registrado como namorado(a) na sua lista de contatos, ", g->relacao[i][id].nome_i);
+
+            printf("mas não deveria estar lá!\nSeu grau de afinidade de perfil é de apenas %lf%%!\nVocê gostaria de removê-lo da lista?\n", semelhanca*100.0);
+            printf("==================================================================\n");
+
+            int opcao = -1;
+            int correta = 0;
+            while(!correta){
+                printf("Digite (0) para remover o contato e (1) para prosseguir.\n");
+                scanf("%d", &opcao);
+                if(opcao == 0){
+                    printf("O contato foi removido da sua lista!\n");
+                    *estado = 0;
+                    correta = 1;
+                } else if(opcao == 1){
+                    correta = 1;
+                } else {
+                    printf("Digite (0) para remover o contato e (1) para prosseguir.\n");
+                }
+            }
+        }
+    }
+    if(!num_contatos)
+        printf("Todos os contatos possuem grau de afinidade suficiente.\n");
+}
+
+void encontrar_par_ideal(grafo* g, char* nome_usuario){
+    int n = g->num_pessoas;
+    int id = -1;
+
+    for(int i = 0; i < n; i++){
+        if(strcmp(g->relacao[i][0].nome_i, nome_usuario) == 0){
+            id = i;
+            break;
+        }
+    }
+
+    if(id == -1){
+        printf("Usuário não encontrado\n");
+        return;
+    }
+
+    double max_semelhanca = 0.0;
+    int ideal = -1;
+
+    for(int i = 0; i < n; i++){
+        char sexo_id = g->relacao[id][i].sexo_i;
+        char sexo_j = g->relacao[id][i].sexo_j;
+        char interesse_id = g->relacao[id][i].interesse_i;
+        char interesse_j = g->relacao[id][i].interesse_j;
+        int caso1 = interesse_id == 'a' && (interesse_j == 'a' || interesse_j == sexo_id);
+        int caso2 = interesse_id == sexo_j && (interesse_j == 'a' || interesse_j == sexo_id);
+        int estado = g->relacao[id][i].estado;
+
+        if(i == id || estado == 0 || (!caso1 && !caso2)) continue;
+
+        double semelhanca = g->relacao[i][id].semelhanca;
+        if(semelhanca > max_semelhanca){
+            max_semelhanca = semelhanca;
+            ideal = i;
+        }
+    }
+
+    if(ideal == -1) {
+        printf("Desculpe, não foi possível determinar par ideal para o usuário...\n");
+        return;
+    }
+
+    printf("Encontramos o seu par ideal!\n");
+    printf("Você e %s possuem um grau de %lf %% de afinidade de perfil, gostaria de enviar um convite de namoro?\n", g->relacao[id][ideal].nome_j, g->relacao[id][ideal].semelhanca*100.0);
+
+    int opcao = -1;
+    while(opcao != 0 && opcao != 1){
+        printf("Digite (0) para enviar um convite de namoro e (1) para prosseguir.\n");
+        scanf("%d", &opcao);
+        if(opcao == 0){
+            printf("O convite de namoro foi enviado!\n");
+            mandar_convite(g, nome_usuario, g->relacao[id][ideal].nome_j, 2);
+        }
     }
 }

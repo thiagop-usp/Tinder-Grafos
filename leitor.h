@@ -2,7 +2,10 @@
 #define LEITOR_H
 #include "grafo.h"
 
-// Le e cria um usuario do input padrao (stdin)
-usuario* ler_usuario(usuario** lista);
+// Le os usuarios do arquivo de dados .csv e retorna o numero de usuarios lidos
+int ler_usuarios_arquivo(usuario** lista, char* nome_arquivo);
+
+// tornar uma string lowercase
+char* minuscula(char* str);
 
 #endif

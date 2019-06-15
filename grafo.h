@@ -21,9 +21,10 @@ double calcular_semelhanca(usuario* us1, usuario* us2);
 usuario* criar_usuario_nulo();
 
 // Cria um usuario dado as suas informações e o coloca na lista de usuarios
-usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, char sexo, char* curso, char* genero_musica, char* cidade, usuario** lista);
+usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista);
 
 // Manda um convite de amizade (tipo_convite == 1) ou namoro (tipo_convite == 2) do usuario origem para o usuario destino.
+// tipo_convite é 1 para convite de amizade e 2 para convite de namoro.
 void mandar_convite(grafo* g, char* origem, char* destino, int tipo_convite);
 
 // Ve os convites do usuario e decide aceitá-los ou não.
@@ -31,4 +32,10 @@ void ver_convites(grafo* g, char* nome_usuario);
 
 // Dado o nome de um usuario, sugere possiveis novos amigos verdadeiros com base em afinidade.
 void sugerir_amigos(grafo* g, char* nome_usuario);
+
+// Dado o nome de um usuario, detecta as pessoas em sua lista de contatos que nao deveriam estar la devido a baixa afinidade
+void detectar_baixa_afinidade(grafo* g, char* nome_usuario);
+
+// Dado o nome de um usuario, encontra o namorado ou a namorada ideal com base em suas afinidades.
+void encontrar_par_ideal(grafo* g, char* nome_usuario);
 #endif
