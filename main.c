@@ -49,63 +49,63 @@ int main(){
 
         switch(menu_op){
             case 0:
-                printf(COLOR_RESET "Digite o nome do arquivo .csv\n");
+                printf(COLOR_YELLOW "Digite o nome do arquivo .csv\n" COLOR_RESET);
                 char nome_arquivo[100];
                 scanf("%s", nome_arquivo);
 
                 int n = ler_usuarios_arquivo(lista, nome_arquivo);
                 g = criar_grafo(n);
                 atualizar_grafo(g, lista);
-                printf(COLOR_RESET "Base carregada com sucesso!\n===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "Base carregada com sucesso!\n===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 1:
                 if(g == NULL)
-                    printf("Você deve carregar uma base de dados antes!\n");
+                    printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
                 else
                     imprimir_grafo(g);
-                printf(COLOR_RESET "===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 2:
-                printf("Digite o nome do usuário\n");
+                printf(COLOR_YELLOW "Digite o nome do usuário\n" COLOR_RESET);
                 char nome_usuario[100];
                 scanf("%s", nome_usuario);
                 if(g == NULL)
-                    printf("Você deve carregar uma base de dados antes!\n");
+                    printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
                 else
                     imprimir_grafo_usuario(g, nome_usuario);
-                printf(COLOR_RESET "===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 3:
-                printf("Digite o nome do remetente\n");
+                printf(COLOR_YELLOW "Digite o nome do remetente\n" COLOR_RESET);
                 char origem[100];
                 scanf("%s", origem);
 
-                printf(COLOR_RESET "Digite o nome do destinatario\n");
+                printf(COLOR_YELLOW "Digite o nome do destinatario\n" COLOR_RESET);
                 char destino[100];
                 scanf("%s", destino);
 
-                printf(COLOR_RESET "Qual é o tipo do convite? Digite (1) para convite de amizade e (2) para convite de namoro.\n");
+                printf(COLOR_YELLOW "Qual é o tipo do convite? Digite (1) para convite de amizade e (2) para convite de namoro.\n" COLOR_RESET);
 
                 int tipo_convite;
                 scanf("%d", &tipo_convite);
 
                 if(g == NULL)
-                    printf(COLOR_RESET "Você deve carregar uma base de dados antes!\n");
+                    printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
                 else
                     mandar_convite(g, origem, destino, tipo_convite);
 
-                printf(COLOR_RESET "===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 4:
-                printf(COLOR_RESET "Digite o nome do usuário do qual você gostaria de ver os convites.\n");
+                printf(COLOR_YELLOW "Digite o nome do usuário do qual você gostaria de ver os convites.\n" COLOR_RESET);
                 scanf("%s", nome_usuario);
 
                 if(g == NULL)
-                    printf(COLOR_RESET "Você deve carregar uma base de dados antes!\n");
+                    printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
                 else
                     ver_convites(g, nome_usuario);
 
-                printf(COLOR_RESET "===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 5:
                 printf(COLOR_RESET "Digite o nome do usuário do qual você gostaria de realizar sugestões.\n");
@@ -116,7 +116,7 @@ int main(){
                 else
                     sugerir_amigos(g, nome_usuario);
 
-                printf(COLOR_RESET "===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 6:
                 printf(COLOR_RESET "Digite o nome do usuário do qual você gostaria de detectar contatos inválidos.\n");
@@ -127,7 +127,7 @@ int main(){
                 else
                     detectar_baixa_afinidade(g, nome_usuario);
 
-                printf(COLOR_RESET "===================================================\nDigite a próxima operação.\n");
+                printf(COLOR_YELLOW "===================================================\nDigite a próxima operação.\n" COLOR_RESET);
                 break;
             case 7:
                 system("clear");
