@@ -3,20 +3,6 @@
 #include "grafo.h"
 #include "leitor.h"
 
-#define MENU1 "Bem vindo ao Rednit, o lugar perfeito para se relacionar!\n===============================================\n"
-#define MENU2 "O que você gostaria de fazer?\n\n"
-#define MENU3 "0: Carregar arquivo .csv\n1: Listar relações\n"
-#define MENU4 "2: Listar relações (usuário)\n3: Enviar convite de amizade\n4: Ver convites\n"
-#define MENU5 "5: Sugerir novos amigos\n6: Detectar falsas amizades\n7: Mostrar menu\n8: Sair\n===============================================\n"
-#define RED0 "     ____ _____  ____ _   _ ___ _____ \n"
-#define RED1 "    / _  |____ |/ _  | | / |_ _|_   _|\n"
-#define RED2 "   | (_| | |_  | | | | |/  || |  | |\n"
-#define RED3 "    > _  |___| | |_| |  /| || |  | |\n"
-#define RED4 "   /_/ |_|_____|\\____|_/ |_|___| |_|\n"
-#define RED5 "\n"
-#define RED RED0 RED1 RED2 RED3 RED4 RED5
-#define MENUREP MENU2 MENU3 MENU4 MENU5
-#define MENUIN RED MENU1 MENUREP
 #define COLOR_RED     "\x1b[31m"
 #define COLOR_GREEN   "\x1b[32m"
 #define COLOR_YELLOW  "\x1b[33m"
@@ -34,6 +20,20 @@
 #define BG_MAGENTA "\x1b[45m"
 #define BG_CYAN    "\x1b[46m"
 #define BG_WHITE   "\x1b[47m"
+#define MENU1 "Bem vindo ao Rednit, o lugar perfeito para se relacionar!\n===============================================\n"
+#define MENU2 "O que você gostaria de fazer?\n\n"
+#define MENU3 "0: Carregar arquivo .csv\n1: Listar relações\n"
+#define MENU4 "2: Listar relações (usuário)\n3: Enviar convite de amizade\n4: Ver convites\n"
+#define MENU5 "5: Sugerir novos amigos\n6: Detectar falsas amizades\n7: Mostrar menu\n8: Sair\n" COLOR_MAGENTA "===============================================\n"
+#define RED0 "     ____ _____  ____ _   _ ___ _____ \n"
+#define RED1 "    / _  |____ |/ _  | | / |_ _|_   _|\n"
+#define RED2 "   | (_| | |_  | | | | |/  || |  | |\n"
+#define RED3 "    > _  |___| | |_| |  /| || |  | |\n"
+#define RED4 "   /_/ |_|_____|\\____|_/ |_|___| |_|\n"
+#define RED5 "\n"
+#define RED RED0 RED1 RED2 RED3 RED4 RED5
+#define MENUREP MENU2 MENU3 MENU4 MENU5
+#define MENUIN RED MENU1 COLOR_RESET MENUREP
 
 int main(){
     usuario* lista[1000];
