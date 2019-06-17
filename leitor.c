@@ -48,6 +48,9 @@ int ler_usuarios_arquivo(usuario** lista, char* nome_arquivo){
 
         num_usuarios++;
     }
+    fclose(arquivo);
     return num_usuarios;
 }
+
+
 

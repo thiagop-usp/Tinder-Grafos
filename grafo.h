@@ -14,6 +14,9 @@ void atualizar_grafo(grafo* g, usuario** lista);
 // Imprime as relacoes entre os usuarios do grafo
 void imprimir_grafo(grafo* g);
 
+// Imprime as relacoes de um usuario em especifico
+void imprimir_grafo_usuario(grafo* g, char* usuario);
+
 // Calcula a semelhanca entre dois usuarios.
 double calcular_semelhanca(usuario* us1, usuario* us2);
 

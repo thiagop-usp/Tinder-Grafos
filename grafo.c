@@ -10,152 +10,152 @@
 #define VERDADEIRO 0.5
 #define BAIXA_AFINIDADE 0.2
 
-int id_max;
+    int id_max;
 
-struct USUARIO{
-    char* nome;
-    int id;
-    int idade;
-    char* filme_predileto;
-    int interesse;
-    int sexo;
-    char* curso;
-    char*  genero_musica;
-    char* cidade;
-};
+    struct USUARIO{
+        char* nome;
+        int id;
+        int idade;
+        char* filme_predileto;
+        int interesse;
+        int sexo;
+        char* curso;
+        char*  genero_musica;
+        char* cidade;
+    };
 
-struct ARESTA{
-    double semelhanca;
+    struct ARESTA{
+        double semelhanca;
 
-    char* nome_i;
-    char* nome_j;
+        char* nome_i;
+        char* nome_j;
 
-    // interesse == 0 se i procura por homens, 1 se procura por mulheres e 2 se procura por ambos
-    int interesse_i;
-    int interesse_j;
+        // interesse == 0 se i procura por homens, 1 se procura por mulheres e 2 se procura por ambos
+        int interesse_i;
+        int interesse_j;
 
-    // sexo == 0 se i é homem e 1 se é mulher
-    char sexo_i;
-    char sexo_j;
+        // sexo == 0 se i é homem e 1 se é mulher
+        char sexo_i;
+        char sexo_j;
 
-    // Estado == 0 se o usuario i nao conhece o usuario j
-    // Estado == 1 se o usuario i é amigo do usuario j
-    // Estado == 2 se o usuario i namora o usuário j
-    int estado;
+        // Estado == 0 se o usuario i nao conhece o usuario j
+        // Estado == 1 se o usuario i é amigo do usuario j
+        // Estado == 2 se o usuario i namora o usuário j
+        int estado;
 
-    // Convite == 0 se o usuario i nao convidou o usuario j
-    // Convite == 1 se o usuario i enviou um convite de amizade para o usuario j
-    // Convite == 2 se o usuario i enviou um convite de namoro para o usuario j
-    int convite;
-};
+        // Convite == 0 se o usuario i nao convidou o usuario j
+        // Convite == 1 se o usuario i enviou um convite de amizade para o usuario j
+        // Convite == 2 se o usuario i enviou um convite de namoro para o usuario j
+        int convite;
+    };
 
-struct GRAFO{
-    aresta relacao[N][N];
-    int num_pessoas;
-};
+    struct GRAFO{
+        aresta relacao[N][N];
+        int num_pessoas;
+    };
 
-grafo* criar_grafo(int num_pessoas){
-    grafo* g = malloc(sizeof(grafo));
+    grafo* criar_grafo(int num_pessoas){
+        grafo* g = malloc(sizeof(grafo));
 
-    if(g == NULL) return g;
+        if(g == NULL) return g;
 
-    g->num_pessoas = num_pessoas;
+        g->num_pessoas = num_pessoas;
 
-    for(int i = 0; i < num_pessoas; i++){
-        g->relacao[i][i].nome_i = malloc(50);
-        g->relacao[i][i].nome_j = malloc(50);
+        for(int i = 0; i < num_pessoas; i++){
+            g->relacao[i][i].nome_i = malloc(50);
+            g->relacao[i][i].nome_j = malloc(50);
+        }
+
+        for(int i = 0; i < num_pessoas; i++){
+            for(int j = 0; j < num_pessoas; j++){
+                if(i == j) continue;
+                g->relacao[i][j].semelhanca = 0.0;
+                g->relacao[i][j].convite = 0;
+                g->relacao[i][j].estado = 0;
+                g->relacao[i][j].nome_i = malloc(50);
+                g->relacao[i][j].nome_j = malloc(50);
+            }
+        }
+        return g;
     }
 
-    for(int i = 0; i < num_pessoas; i++){
-        for(int j = 0; j < num_pessoas; j++){
-            if(i == j) continue;
-            g->relacao[i][j].semelhanca = 0.0;
-            g->relacao[i][j].convite = 0;
-            g->relacao[i][j].estado = 0;
-            g->relacao[i][j].nome_i = malloc(50);
-            g->relacao[i][j].nome_j = malloc(50);
+    usuario* criar_usuario_nulo(){
+        usuario* us = malloc(sizeof(usuario));
+        us->nome = malloc(50);
+        us->filme_predileto = malloc(50);
+        us->curso = malloc(50);
+        us->cidade = malloc(50);
+        us->genero_musica = malloc(50);
+        return us;
+    }
+
+    usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista_ids){
+        usuario* us = criar_usuario_nulo();
+
+        us->id = id_max++;
+        us->idade = idade;
+        us->interesse = interesse;
+        us->sexo = sexo;
+
+        strcpy(us->nome, nome);
+        strcpy(us->curso, curso);
+        strcpy(us->genero_musica, genero_musica);
+        strcpy(us->cidade, cidade);
+        strcpy(us->filme_predileto, filme_predileto);
+
+        lista_ids[us->id] = us;
+        return us;
+    }
+
+    double calcular_semelhanca(usuario* us1, usuario* us2){
+        double sim_idade = 1 - 0.02*(abs(us1->idade - us2->idade));
+
+        double sim_curso = (double) strcmp(us1->curso, us2->curso);   
+        if(sim_curso == 0) sim_curso = 1.0;
+        else sim_curso = 0.0;
+
+        double sim_cidade = (double) strcmp(us1->cidade, us2->cidade);   
+        if(sim_cidade == 0) sim_cidade = 1.0;
+        else sim_cidade = 0.0;
+
+        double sim_filme = (double) strcmp(us1->filme_predileto, us2->filme_predileto);   
+        if(sim_filme == 0) sim_filme = 1.0;
+        else sim_filme = 0.0;
+
+        double sim_musica = (double) strcmp(us1->genero_musica, us2->genero_musica);   
+        if(sim_musica == 0) sim_musica = 1.0;
+        else sim_musica = 0.0;
+
+        double total = (30.0*sim_idade + 15.0*sim_filme + 30.0*sim_curso + 20.0*sim_musica + 35.0*sim_cidade);
+        total /= 130.0;
+        total *= (1.0 - (abs(us1->idade - us2->idade)/100.0));
+        return total;
+    }
+
+    void atualizar_grafo(grafo* g, usuario** lista){
+        for(int i = 0; i < id_max; i++){
+            strcpy(g->relacao[i][i].nome_i, lista[i]->nome);
+            for(int j = 0; j < id_max; j++){
+                if(i == j) continue;
+                double semelhanca = calcular_semelhanca(lista[i], lista[j]);
+                int id_i = lista[i]->id;
+                int id_j = lista[j]->id;
+
+                g->relacao[id_i][id_j].semelhanca = semelhanca;
+                strcpy(g->relacao[id_i][id_j].nome_i, lista[i]->nome);
+                strcpy(g->relacao[id_i][id_j].nome_j, lista[j]->nome);
+
+                g->relacao[id_i][id_j].interesse_i = lista[i]->interesse;
+                g->relacao[id_j][id_i].interesse_i = lista[j]->interesse;
+                g->relacao[id_j][id_i].interesse_j = lista[i]->interesse;
+                g->relacao[id_i][id_j].interesse_j = lista[j]->interesse;
+                g->relacao[id_i][id_j].sexo_i = lista[i]->sexo;
+                g->relacao[id_j][id_i].sexo_i = lista[j]->sexo;
+                g->relacao[id_j][id_i].sexo_j = lista[i]->sexo;
+                g->relacao[id_i][id_j].sexo_j = lista[j]->sexo;
+            }
         }
     }
-    return g;
-}
-
-usuario* criar_usuario_nulo(){
-    usuario* us = malloc(sizeof(usuario));
-    us->nome = malloc(50);
-    us->filme_predileto = malloc(50);
-    us->curso = malloc(50);
-    us->cidade = malloc(50);
-    us->genero_musica = malloc(50);
-    return us;
-}
-
-usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista_ids){
-    usuario* us = criar_usuario_nulo();
-
-    us->id = id_max++;
-    us->idade = idade;
-    us->interesse = interesse;
-    us->sexo = sexo;
-
-    strcpy(us->nome, nome);
-    strcpy(us->curso, curso);
-    strcpy(us->genero_musica, genero_musica);
-    strcpy(us->cidade, cidade);
-    strcpy(us->filme_predileto, filme_predileto);
-
-    lista_ids[us->id] = us;
-    return us;
-}
-
-double calcular_semelhanca(usuario* us1, usuario* us2){
-    double sim_idade = 1 - 0.02*(abs(us1->idade - us2->idade));
-
-    double sim_curso = (double) strcmp(us1->curso, us2->curso);   
-    if(sim_curso == 0) sim_curso = 1.0;
-    else sim_curso = 0.0;
-
-    double sim_cidade = (double) strcmp(us1->cidade, us2->cidade);   
-    if(sim_cidade == 0) sim_cidade = 1.0;
-    else sim_cidade = 0.0;
-
-    double sim_filme = (double) strcmp(us1->filme_predileto, us2->filme_predileto);   
-    if(sim_filme == 0) sim_filme = 1.0;
-    else sim_filme = 0.0;
-
-    double sim_musica = (double) strcmp(us1->genero_musica, us2->genero_musica);   
-    if(sim_musica == 0) sim_musica = 1.0;
-    else sim_musica = 0.0;
-
-    double total = (30.0*sim_idade + 15.0*sim_filme + 30.0*sim_curso + 20.0*sim_musica + 35.0*sim_cidade);
-    total /= 130.0;
-    total *= (1.0 - (abs(us1->idade - us2->idade)/100.0));
-    return total;
-}
-
-void atualizar_grafo(grafo* g, usuario** lista){
-    for(int i = 0; i < id_max; i++){
-        strcpy(g->relacao[i][i].nome_i, lista[i]->nome);
-        for(int j = 0; j < id_max; j++){
-            if(i == j) continue;
-            double semelhanca = calcular_semelhanca(lista[i], lista[j]);
-            int id_i = lista[i]->id;
-            int id_j = lista[j]->id;
-
-            g->relacao[id_i][id_j].semelhanca = semelhanca;
-            strcpy(g->relacao[id_i][id_j].nome_i, lista[i]->nome);
-            strcpy(g->relacao[id_i][id_j].nome_j, lista[j]->nome);
-
-            g->relacao[id_i][id_j].interesse_i = lista[i]->interesse;
-            g->relacao[id_j][id_i].interesse_i = lista[j]->interesse;
-            g->relacao[id_j][id_i].interesse_j = lista[i]->interesse;
-            g->relacao[id_i][id_j].interesse_j = lista[j]->interesse;
-            g->relacao[id_i][id_j].sexo_i = lista[i]->sexo;
-            g->relacao[id_j][id_i].sexo_i = lista[j]->sexo;
-            g->relacao[id_j][id_i].sexo_j = lista[i]->sexo;
-            g->relacao[id_i][id_j].sexo_j = lista[j]->sexo;
-        }
-    }
-}
 
 void imprimir_grafo(grafo* g){
     int n = g->num_pessoas;
@@ -185,6 +185,47 @@ void imprimir_grafo(grafo* g){
             }
         }
         printf("\n");
+    }
+}
+
+void imprimir_grafo_usuario(grafo* g, char* nome_usuario){
+    int n = g->num_pessoas;
+    int id = -1;
+    for(int i = 0; i < n; i++){
+        if(strcmp(g->relacao[i][0].nome_i, nome_usuario) == 0){
+            id = i;
+            break;
+        }
+    }
+
+    if(id == -1){
+        printf("Usuário não encontrado\n");
+        return;
+    }
+
+    for(int i = 0; i < n; i++){
+        if(i == id) continue;
+        double sem = g->relacao[i][id].semelhanca;
+        int convite = g->relacao[i][id].convite;
+        int estado = g->relacao[i][id].estado;
+
+        printf("%s possui %lf%% de semelhança com %s\n", g->relacao[i][id].nome_i, sem * 100.0, g->relacao[i][id].nome_j);
+
+        if(convite == 0){
+            printf("%s não mandou convites para o(a) usuário(a) %s\n", g->relacao[i][id].nome_i, g->relacao[i][id].nome_j);
+        } else if(convite == 1){
+            printf("%s convidou o(a) usuário(a) %s para amizade\n", g->relacao[i][id].nome_i, g->relacao[i][id].nome_j);
+        } else if(convite == 2){
+            printf("%s convidou o(a) usuário(a) %s para namoro\n", g->relacao[i][id].nome_i, g->relacao[i][id].nome_j);
+        }
+
+        if(estado == 0){
+            printf("%s não conhece o(a) usuário(a) %s\n", g->relacao[i][id].nome_i, g->relacao[i][id].nome_j);
+        } else if(estado == 1){
+            printf("%s e %s são amigos(as)\n", g->relacao[i][id].nome_i, g->relacao[i][id].nome_j);
+        } else if(estado == 2){
+            printf("%s e %s são namorados(as)\n", g->relacao[i][id].nome_i, g->relacao[i][id].nome_j);
+        }
     }
 }
 
