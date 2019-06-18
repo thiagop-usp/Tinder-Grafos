@@ -376,13 +376,12 @@ void sugerir_amigos(grafo* g, char* nome_usuario){
             scanf("%d", &tipo_convite);
 
             while(tipo_convite != 2){
-                mandar_convite(g, nome_usuario, g->relacao[i][id].nome_i, tipo_convite);
                 if(tipo_convite == 0){
-                    printf("Convite de amizade enviado para %s!\n", g->relacao[i][id].nome_i);
+		    mandar_convite(g, nome_usuario, g->relacao[i][id].nome_i, AMIZADE);
                     tipo_convite = 2;
                 }
                 else if(tipo_convite == 1){
-                    printf("Convite de namoro enviado para %s!\n", g->relacao[i][id].nome_i);
+		    mandar_convite(g, nome_usuario, g->relacao[i][id].nome_i, NAMORO);
                     tipo_convite = 2;
                 }
                 else {

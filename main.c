@@ -41,7 +41,7 @@ int main(){
 
     int menu_op = -1;
 
-    printf(COLOR_MAGENTA MENUIN);
+    printf(COLOR_MAGENTA MENUIN COLOR_RESET);
     grafo* g = NULL;
 
     while(menu_op != 8){
@@ -131,7 +131,7 @@ int main(){
                 break;
             case 7:
                 system("clear");
-                printf(COLOR_MAGENTA MENUIN);
+                printf(COLOR_MAGENTA MENUIN COLOR_RESET);
                 break;
         }
 

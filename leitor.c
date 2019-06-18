@@ -13,7 +13,7 @@ char* minuscula(char* str){
 }
 
 int ler_usuarios_arquivo(usuario** lista, char* nome_arquivo){
-    FILE* arquivo = fopen(nome_arquivo, "r+");
+    FILE* arquivo = fopen(nome_arquivo, "r");
     char cabecalho[100];
     fgets(cabecalho, 100, arquivo);
     int num_usuarios = 0;
