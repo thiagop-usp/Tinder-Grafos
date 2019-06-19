@@ -9,7 +9,7 @@ typedef struct USUARIO usuario;
 grafo* criar_grafo(int num_pessoas);
 
 // Atualiza o grafo com as semelhanças entre os usuarios.
-void atualizar_grafo(grafo* g, usuario** lista);
+void atualizar_grafo(grafo* g, usuario** lista, int* id_max);
 
 // Imprime as relacoes entre os usuarios do grafo
 void imprimir_grafo(grafo* g);
@@ -24,7 +24,16 @@ double calcular_semelhanca(usuario* us1, usuario* us2);
 usuario* criar_usuario_nulo();
 
 // Cria um usuario dado as suas informações e o coloca na lista de usuarios
-usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista);
+usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista, int* id_max);
+
+// Dado uma variavel do tipo usuario, imprime suas informaçoes
+void imprimir_usuario(usuario* us);
+
+// Dado uma lista de usuarios, imprime todos
+void listar_usuarios(usuario** lista, int* id_max);
+
+// Dado o nome de um usuario, o procura na base de dados e mostra suas informaçoes
+void mostrar_usuario(usuario** lista, char* nome, int* id_max);
 
 // Manda um convite de amizade (tipo_convite == 1) ou namoro (tipo_convite == 2) do usuario origem para o usuario destino.
 // tipo_convite é 1 para convite de amizade e 2 para convite de namoro.

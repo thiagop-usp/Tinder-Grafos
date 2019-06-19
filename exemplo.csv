@@ -1,4 +1,4 @@
-nome,filme_predileto,curso,genero_musical,idade,interesse,sexo
+nome,filme_predileto,curso,genero_musical,cidade,idade,interesse,sexo
 Alberto,Avengers,BCC,Rock,Sao Carlos,20,1,0
 Maria,Avengers,Engcomp,Rock,Sao Carlos,25,0,1
 Virgilio,Forrest Gump,Matematica,Sertanejo,Indaiatuba,50,1,1
@@ -6,3 +6,11 @@ Roberto,007,Fisica,Rock,Indaiatuba,18,2,0
 Rafael,Avengers,Engcomp,Blues,Sao Roque,23,1,0
 Janaina,Brinquedo Historia,Fisica,Sertanejo,Sao Carlos,50,1,1
 Carla,Brinquedo Historia,Fisica,Blues,Sao Roque,50,2,1
+Pedro,Avengers,BSI,Funk,Sao Roque,23,2,0
+Chicão,Superman,BSI,Funk,Sao Paulo,50,2,2
+Igor,Pantera negra,Engenharia Eletrica,Lofi,Araraquara,19,1,0
+Janete,Uma noite no museu,BCC,Jazz,Itajai,20,2,1
+David,Interestelar,BCC,Indie,Sao Carlos,19,1,0
+Luisa,Sei la,BCC,Bahiana system,Victory of the Conquest,20,0,1
+Robertinho,O poderoso chefão,Engenharia Eletrica,Punk Rock,Sao Paulo,28,1,0
+Thiago,Ilha do Medo,BCC,Gosto de tudo sabe,Sao Paulo,19,1,0
