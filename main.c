@@ -61,7 +61,7 @@ int main(){
 
                 g = criar_grafo(n);
                 atualizar_grafo(g, lista, id_max);
-                printf("\n" COLOR_GREEN "Base carregada com sucesso!\n===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
+                printf("\n" COLOR_GREEN "Base carregada com sucesso!" COLOR_YELLOW "\n===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
                 break;
             case 1:
                 printf(COLOR_YELLOW "Digite o nome do arquivo de dados\n" COLOR_RESET);
