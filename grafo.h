@@ -35,15 +35,6 @@ void listar_usuarios(usuario** lista, int* id_max);
 // Dado o nome de um usuario, o procura na base de dados e mostra suas informaçoes
 void mostrar_usuario(usuario** lista, char* nome, int* id_max);
 
-// Dado uma variavel do tipo usuario, imprime suas informaçoes
-void imprimir_usuario(usuario* us);
-
-// Dado uma lista de usuarios, imprime todos
-void listar_usuarios(usuario** lista);
-
-// Dado o nome de um usuario, o procura na base de dados e mostra suas informaçoes
-void mostrar_usuario(usuario** lista, char* nome);
-
 // Manda um convite de amizade (tipo_convite == 1) ou namoro (tipo_convite == 2) do usuario origem para o usuario destino.
 // tipo_convite é 1 para convite de amizade e 2 para convite de namoro.
 void mandar_convite(grafo* g, char* origem, char* destino, int tipo_convite);

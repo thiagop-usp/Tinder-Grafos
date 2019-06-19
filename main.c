@@ -50,13 +50,9 @@ int main(){
                 char nome_arquivo[100];
                 scanf("%s", nome_arquivo);
 
-<<<<<<< HEAD
                 (*id_max) = 0;
 
                 int n = ler_usuarios_arquivo(lista, nome_arquivo, id_max);
-=======
-                int n = ler_usuarios_arquivo(lista, nome_arquivo);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
 
                 if(n == -1){
                     printf("\n" COLOR_YELLOW "===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
@@ -64,11 +60,7 @@ int main(){
                 }
 
                 g = criar_grafo(n);
-<<<<<<< HEAD
                 atualizar_grafo(g, lista, id_max);
-=======
-                atualizar_grafo(g, lista);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
                 printf("\n" COLOR_GREEN "Base carregada com sucesso!\n===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
                 break;
             case 1:
@@ -79,11 +71,7 @@ int main(){
                 int add = escrever_usuario_arquivo(us, nome_arquivo);
 
                 if(add == 1){
-<<<<<<< HEAD
                     printf(COLOR_GREEN "Usuário adicionado à base de dados com sucesso! Lembre-se de recarregar a base!\n" COLOR_RESET);
-=======
-                    printf(COLOR_GREEN "Usuário adicionado à base de dados com sucesso!\n" COLOR_RESET);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
                 } else if(add == -1){
                     printf(COLOR_RED "Desculpe, houve um erro ao adicionar o seu usuario à base de dados :(\n" COLOR_RESET);
                 }
@@ -95,11 +83,7 @@ int main(){
                     printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
 
                 else
-<<<<<<< HEAD
                     listar_usuarios(lista, id_max);
-=======
-                    listar_usuarios(lista);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
 
                 printf("\n" COLOR_YELLOW "===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
                 break;
@@ -111,11 +95,7 @@ int main(){
                 if(g == NULL)
                     printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
                 else
-<<<<<<< HEAD
                     mostrar_usuario(lista, nome_usuario, id_max);
-=======
-                    mostrar_usuario(lista, nome_usuario);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
 
                 printf("\n" COLOR_YELLOW "===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
                 break;

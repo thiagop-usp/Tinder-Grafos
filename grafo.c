@@ -21,11 +21,6 @@
 #define VERDADEIRO 0.5
 #define BAIXA_AFINIDADE 0.2
 
-<<<<<<< HEAD
-=======
-int id_max;
-
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
 struct USUARIO{
     char* nome;
     int id;
@@ -103,17 +98,10 @@ usuario* criar_usuario_nulo(){
     return us;
 }
 
-<<<<<<< HEAD
 usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista_ids, int* id_max){
     usuario* us = criar_usuario_nulo();
 
     us->id = (*id_max)++;
-=======
-usuario* criar_usuario(char* nome, int idade, char* filme_predileto, int interesse, int sexo, char* curso, char* genero_musica, char* cidade, usuario** lista_ids){
-    usuario* us = criar_usuario_nulo();
-
-    us->id = id_max++;
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
     us->idade = idade;
     us->interesse = interesse;
     us->sexo = sexo;
@@ -153,17 +141,10 @@ double calcular_semelhanca(usuario* us1, usuario* us2){
     return total;
 }
 
-<<<<<<< HEAD
 void atualizar_grafo(grafo* g, usuario** lista, int* id_max){
     for(int i = 0; i < *id_max; i++){
         strcpy(g->relacao[i][i].nome_i, lista[i]->nome);
         for(int j = 0; j < *id_max; j++){
-=======
-void atualizar_grafo(grafo* g, usuario** lista){
-    for(int i = 0; i < id_max; i++){
-        strcpy(g->relacao[i][i].nome_i, lista[i]->nome);
-        for(int j = 0; j < id_max; j++){
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
             if(i == j) continue;
             double semelhanca = calcular_semelhanca(lista[i], lista[j]);
             int id_i = lista[i]->id;
@@ -246,26 +227,16 @@ void imprimir_usuario(usuario* us){
     printf(COLOR_YELLOW "Cidade: " COLOR_RESET "%s\n", us->cidade);
 }
 
-<<<<<<< HEAD
 void listar_usuarios(usuario** lista, int* id_max){
     for(int i = 0; i < *id_max; i++){
-=======
-void listar_usuarios(usuario** lista){
-    for(int i = 0; i < id_max; i++){
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
         usuario* us = lista[i];
         imprimir_usuario(us);
         printf("\n");
     }
 }
 
-<<<<<<< HEAD
 void mostrar_usuario(usuario** lista, char* nome, int* id_max){
     for(int i = 0; i < *id_max; i++){
-=======
-void mostrar_usuario(usuario** lista, char* nome){
-    for(int i = 0; i < id_max; i++){
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
         usuario* us = lista[i];
         if(strcmp(us->nome, nome) == 0){
             printf(COLOR_GREEN "Usuario(a) %s encontrado(a)!\n=============================================\n\n" COLOR_RESET, nome);
@@ -274,11 +245,7 @@ void mostrar_usuario(usuario** lista, char* nome){
         }
     }
 
-<<<<<<< HEAD
     printf(COLOR_RED "Usuário não encontrado\n" COLOR_RESET);
-=======
-    printf("Usuário não encontrado\n");
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
     return;
 }
 
@@ -373,11 +340,7 @@ void ver_convites(grafo* g, char* nome_usuario){
         if(*convite) num_convites++;
 
         if(*convite == 1){
-<<<<<<< HEAD
             printf("%s mandou um convite de amizade para você! O que deseja fazer?\n\n" COLOR_YELLOW "[0]: Recusar\n[1]: Aceitar\n[2]: Ignorar\n" COLOR_RESET, g->relacao[j][id].nome_i);
-=======
-            printf("%s mandou um convite de amizade para você! O que deseja fazer?\n\n[0]: Recusar\n[1]: Aceitar\n[2]: Ignorar\n", g->relacao[j][id].nome_i);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
             printf("A chance de essa ser a amizade ideal é de %lf%%\n", semelhanca*100.0);
             printf("======================================================================================\n");
             char* opcao = malloc(5);
@@ -406,11 +369,7 @@ void ver_convites(grafo* g, char* nome_usuario){
         }
 
         if(*convite == 2){
-<<<<<<< HEAD
             printf("%s mandou um pedido de namoro para você! O que deseja fazer?\n\n" COLOR_YELLOW "[0]: Recusar\n[1]: Aceitar\n[2]: Ignorar\n" COLOR_RESET, g->relacao[j][id].nome_i);
-=======
-            printf("%s mandou um pedido de namoro para você! O que deseja fazer?\n\n[0]: Recusar\n[1]: Aceitar\n[2]: Ignorar\n", g->relacao[j][id].nome_i);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
             printf("A chance de essa ser o namoro ideal é de %lf%%\n", semelhanca*100.0);
             printf("======================================================================================\n");
             int opcao = -1;
@@ -471,11 +430,7 @@ void sugerir_amigos(grafo* g, char* nome_usuario){
 
         if(semelhanca >= VERDADEIRO && estado == 0){
             num_sugestoes++;
-<<<<<<< HEAD
             printf("Você e %s seriam grandes parceiros(as)!\nSeu grau de afinidade de perfil é de %lf%%!\nO que você deseja fazer?\n\n" COLOR_YELLOW "[0]: Mandar um convite de amizade.\n[1]: Enviar um convite de namoro\n[2]: Prosseguir.\n" COLOR_RESET, g->relacao[i][id].nome_i, semelhanca*100.0);
-=======
-            printf("Você e %s seriam grandes parceiros(as)!\nSeu grau de afinidade de perfil é de %lf%%!\nO que você deseja fazer?\n\n[0]: Mandar um convite de amizade.\n[1]: Enviar um convite de namoro\n[2]: Prosseguir.\n", g->relacao[i][id].nome_i, semelhanca*100.0);
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
             printf("==================================================================\n");
 
             int tipo_convite = -1;
@@ -536,11 +491,7 @@ void detectar_baixa_afinidade(grafo* g, char* nome_usuario){
             int opcao = -1;
             int correta = 0;
             while(!correta){
-<<<<<<< HEAD
                 printf("O que você deseja fazer?\n\n" COLOR_YELLOW "[0]: Remover o contato\n[1]: Prosseguir.\n" COLOR_RESET);
-=======
-                printf("O que você deseja fazer?\n\n[0]: Remover o contato\n[1]: Prosseguir.\n");
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
                 scanf("%d", &opcao);
                 if(opcao == 0){
                     printf(COLOR_GREEN "O contato foi removido da sua lista!\n" COLOR_RESET);
@@ -549,11 +500,7 @@ void detectar_baixa_afinidade(grafo* g, char* nome_usuario){
                 } else if(opcao == 1){
                     correta = 1;
                 } else {
-<<<<<<< HEAD
                     printf("O que você deseja fazer?\n\n" COLOR_YELLOW "[0]: Remover o contato\n[1]: Prosseguir.\n" COLOR_RESET);
-=======
-                    printf("O que você deseja fazer?\n\n[0]: Remover o contato\n[1]: Prosseguir.\n");
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
                 }
             }
         }
@@ -609,11 +556,7 @@ void encontrar_par_ideal(grafo* g, char* nome_usuario){
 
     int opcao = -1;
     while(opcao != 0 && opcao != 1){
-<<<<<<< HEAD
         printf("O que você deseja fazer?\n\n" COLOR_YELLOW "[0]: Enviar um convite de namoro\n[1]: Prosseguir.\n" COLOR_RESET);
-=======
-        printf("O que você deseja fazer?\n\n[0]: Enviar um convite de namoro\n[1]: Prosseguir.\n");
->>>>>>> 1caef6631c06cb480f3debef8d0e937f68339ea4
         scanf("%d", &opcao);
         if(opcao == 0){
             printf(COLOR_GREEN "O convite de namoro foi enviado!\n" COLOR_RESET);
