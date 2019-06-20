@@ -297,15 +297,8 @@ void mandar_convite(grafo* g, char* origem, char* destino, int tipo_convite){
             if(i == j) continue;
             if(strcmp(g->relacao[i][j].nome_i, origem) != 0 || strcmp(g->relacao[i][j].nome_j, destino) != 0) continue;
 
-            // 0 se nao conhece, 1 se é amigo, 2 se sao namorados
-            int estado = g->relacao[i][j].estado;
-
-            if(!estado){
-                printf(COLOR_GREEN "Convite enviado!\n" COLOR_RESET);
-                g->relacao[i][j].convite = tipo_convite;
-            } else if(tipo_convite == estado){
-                printf("Usuários já se conhecem.\n");
-            }
+	    printf(COLOR_GREEN "Convite enviado!\n" COLOR_RESET);
+	    g->relacao[i][j].convite = tipo_convite;
             return;
         }
     }

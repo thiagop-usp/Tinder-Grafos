@@ -4,3 +4,4 @@ all:
 
 love:
 	@./trabs
+	@rm trabs
