@@ -39,8 +39,11 @@ void mostrar_usuario(usuario** lista, char* nome, int* id_max);
 // tipo_convite é 1 para convite de amizade e 2 para convite de namoro.
 void mandar_convite(grafo* g, char* origem, char* destino, int tipo_convite);
 
+// Mostra todos os usuarios que possuem convites pendentes.
+void ver_convites(grafo* g);
+
 // Ve os convites do usuario e decide aceitá-los ou não.
-void ver_convites(grafo* g, char* nome_usuario);
+void ver_convites_usuario(grafo* g, char* nome_usuario);
 
 // Dado o nome de um usuario, sugere possiveis novos amigos verdadeiros com base em afinidade.
 void sugerir_amigos(grafo* g, char* nome_usuario);

@@ -140,13 +140,21 @@ int main(){
                 printf("\n" COLOR_YELLOW "===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
                 break;
 
-            case 7:printf(COLOR_YELLOW "Digite o nome do usuário do qual você gostaria de ver os convites.\n" COLOR_RESET);
+            case 7:
+                if(g == NULL){
+                    printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
+		    break;
+		}
+
+		ver_convites(g);
+
+		printf(COLOR_YELLOW "Digite o nome do usuário do qual você gostaria de ver os convites.\n" COLOR_RESET);
                 scanf("%s", nome_usuario);
 
                 if(g == NULL)
                     printf(COLOR_RED "Você deve carregar uma base de dados antes!\n" COLOR_RESET);
                 else
-                    ver_convites(g, nome_usuario);
+                    ver_convites_usuario(g, nome_usuario);
 
                 printf("\n" COLOR_YELLOW "===================================================\nDigite a próxima operação. (Digite 10 para mostrar o MENU)\n" COLOR_RESET);
                 break;

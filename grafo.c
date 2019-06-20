@@ -312,7 +312,29 @@ void mandar_convite(grafo* g, char* origem, char* destino, int tipo_convite){
     printf(COLOR_RED "Usuários não encontrados no sistema.\n" COLOR_RESET);
 }
 
-void ver_convites(grafo* g, char* nome_usuario){
+void ver_convites(grafo* g){
+    int n = g->num_pessoas;
+    int num_pendentes = 0;
+
+    printf(COLOR_YELLOW "Os seguintes convites se encontram pendentes:\n" COLOR_RESET);
+
+    for(int i = 0; i < n; i++){
+	for(int j = 0; j < n; j++){
+	    if(i == j) continue;
+	    if(g->relacao[i][j].convite != 0){
+		num_pendentes++;
+		printf("%s mandou um convite para " COLOR_GREEN  "%s.\n" COLOR_RESET, g->relacao[i][j].nome_i, g->relacao[i][j].nome_j);
+	    }
+	}
+    }
+
+    if(!num_pendentes)
+	    printf(COLOR_GREEN "Não há convites pendentes\n" COLOR_RESET);
+
+    printf(COLOR_YELLOW "========================================================================================\n\n" COLOR_RESET);
+}
+
+void ver_convites_usuario(grafo* g, char* nome_usuario){
     int n = g->num_pessoas;
     int id = -1;
 
@@ -329,7 +351,7 @@ void ver_convites(grafo* g, char* nome_usuario){
     }
 
     int num_convites = 0;
-
+	
     for(int j = 0; j < n; j++){
         if(j == id) continue;
         int* convite = &(g->relacao[j][id].convite);
@@ -340,7 +362,7 @@ void ver_convites(grafo* g, char* nome_usuario){
         if(*convite) num_convites++;
 
         if(*convite == 1){
-            printf("%s mandou um convite de amizade para você! O que deseja fazer?\n\n" COLOR_YELLOW "[0]: Recusar\n[1]: Aceitar\n[2]: Ignorar\n" COLOR_RESET, g->relacao[j][id].nome_i);
+            printf("%s mandou um convite de amizade para você! O que deseja fazer?\n\n" COLOR_RED "[0]: Recusar\n" COLOR_GREEN "[1]: Aceitar\n" COLOR_YELLOW "[2]: Ignorar\n" COLOR_RESET, g->relacao[j][id].nome_i);
             printf("A chance de essa ser a amizade ideal é de %lf%%\n", semelhanca*100.0);
             printf("======================================================================================\n");
             char* opcao = malloc(5);
@@ -369,7 +391,7 @@ void ver_convites(grafo* g, char* nome_usuario){
         }
 
         if(*convite == 2){
-            printf("%s mandou um pedido de namoro para você! O que deseja fazer?\n\n" COLOR_YELLOW "[0]: Recusar\n[1]: Aceitar\n[2]: Ignorar\n" COLOR_RESET, g->relacao[j][id].nome_i);
+            printf("%s mandou um pedido de namoro para você! O que deseja fazer?\n\n" COLOR_RED "[0]: Recusar\n" COLOR_GREEN "[1]: Aceitar\n" COLOR_YELLOW "[2]: Ignorar\n" COLOR_RESET, g->relacao[j][id].nome_i);
             printf("A chance de essa ser o namoro ideal é de %lf%%\n", semelhanca*100.0);
             printf("======================================================================================\n");
             int opcao = -1;
